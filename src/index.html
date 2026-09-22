@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Jean-Michel Basquiat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/articles-popup.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="img/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <a href="./index.html"><include src="./components/header.html"></include></a>
+    <div class="instructions">
+      <h1>scroll to zoom</h1>
+      <h1>click and hold to rotate</h1>
+    </div>
+    <div class="instructions2">
+      <h1>press "h" to hide Basquiat</h1>
+      <h1>press "f" to face Basquiat</h1>
+    </div>
+    <main>
+      <div id="canvas-layout">
+        <canvas id="bg-smoke"></canvas>
+      </div>
+      <div class="article">
+        <p>Anatomy</p>
+        <p>Jawbone Of An Ass </p>
+        <p>Hollywood Africans</p>
+        <p>The Figure Portfolio</p>
+        <p>Superhero Portfolio</p>
+        <p>Basquiat as a musician</p>
+        <p>Daros Suite</p>
+        <p>Childhood</p>
+        <p>Andy Warhol</p>
+        <p>SAMO</p>
+      </div>
+      <include src="./components/article-popup.html"></include>
+      <div id="floating-overlay">
+        <canvas id="floating-canvas"></canvas>
+        <button id="floating-close" onclick="FloatingPopup.close()">✕</button>
+      </div>
+    </main>
+    <script src="./js/main.js" type="module"></script>
+  </body>
+</html>

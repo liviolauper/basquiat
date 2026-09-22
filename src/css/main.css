@@ -1,0 +1,187 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --graffiti-font: 'BASQUIAT-WORD';
+}
+
+@font-face {
+  font-family: 'BASQUIAT-TITLE';
+  src: url('../../public/fonts/BASQUIAT-TITLE.otf') format('opentype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BASQUIAT-WORD';
+  src: url('../../public/fonts/BASQUIAT-WORD.otf') format('opentype');
+  font-display: swap;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -webkit-text-size-adjust: none;
+}
+
+a {
+  color: inherit;
+}
+
+/* Base des rem : 12px à 1920px de large, puis proportionnel à la largeur */
+html { font-size: 0.625vw; }
+
+img,
+video {
+  display: block;
+}
+
+main {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+h1, h2, h3, h4, .article > p {
+  font-family: 'BASQUIAT-WORD', sans-serif;
+  paint-order: stroke fill;
+}
+
+.ibm-plex-mono-regular, a {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+header {
+  color: white;
+  position: fixed;
+  z-index: 200;
+  display: flex;
+  gap: 0.7vw;
+  padding: 3.5vh 2vw;
+  align-items: center;
+  paint-order: stroke fill;
+}
+
+header img {
+  height: 6vh;
+  width: auto;
+  object-fit: contain;
+}
+
+h3 {
+  font-size: 2.3vh;
+}
+
+.instructions, .instructions2 {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.instructions {
+  bottom: 3.5vh;
+  right: 2vw;
+  align-items: end;
+}
+
+.instructions2 {
+  bottom: 3.5vh;
+  left: 2vw;
+  align-items: start;
+}
+
+.instructions h1, .instructions2 h1 {
+  font-size: 2.65vh;
+  color: #ffffff;
+  text-align: center;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0.1em 0.2em #000000;
+  text-transform: lowercase;
+  line-height: 1em;
+  /* Flottement + bascule gauche-droite */
+  animation: floatTilt 5.5s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Décalages du flottement, pour que les lignes ne bougent pas à l'unisson.
+   Indépendant du scintillement : le flottement reste continu partout. */
+.instructions  h1:nth-child(2) { animation-duration: 6.4s; animation-delay: -1.7s; }
+.instructions2 h1:nth-child(1) { animation-duration: 6s;   animation-delay: -3.1s; }
+.instructions2 h1:nth-child(2) { animation-duration: 5.9s; animation-delay: -4.6s; }
+
+/* Tour de rôle du scintillement. Le cycle dure --flicker-cycle et chaque ligne
+   n'est allumée que sur son quart ; --flicker-delay place son créneau.
+   Ordre voulu : hide → face → zoom → rotate. */
+.instructions, .instructions2 { --flicker-cycle: 8s; }
+
+.instructions2 h1:nth-child(1) { --flicker-delay: 0s; } /* press "h" to hide   */
+.instructions2 h1:nth-child(2) { --flicker-delay: 2s; } /* press "f" to face     */
+.instructions  h1:nth-child(1) { --flicker-delay: 4s; } /* scroll to zoom      */
+.instructions  h1:nth-child(2) { --flicker-delay: 6s; } /* click and hold to…  */
+
+@keyframes floatTilt {
+  0%, 100% { transform: translateY(-0.35vh) rotate(-2deg); }
+  50%      { transform: translateY(0.35vh) rotate(2deg); }
+}
+
+/* Une lettre = un span, coloré en JS avec une teinte de la palette des articles
+   (voir colorizeInstructions dans main.js). --stroke-color est posé par lettre. */
+.instructions h1 span, .instructions2 h1 span {
+  display: inline-block;
+  white-space: pre;
+  position: relative;
+  animation: letterPulse var(--flicker-cycle, 8s) ease-in-out infinite;
+  animation-delay: var(--flicker-delay, 0s);
+}
+
+/* -webkit-text-stroke n'accepte qu'un seul contour. Le contour coloré animé est
+   donc peint par un calque dupliqué placé DERRIÈRE la lettre, ce qui laisse le
+   fin contour noir hérité du body visible par-dessus. */
+.instructions h1 span::before, .instructions2 h1 span::before {
+  content: attr(data-char);
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: pre;
+  color: transparent;
+  z-index: -1;
+  -webkit-text-stroke-color: var(--stroke-color, gold);
+  animation: flicker var(--flicker-cycle, 8s) ease-in-out infinite;
+  animation-delay: var(--flicker-delay, 0s);
+}
+
+/* Créneau actif sur le premier quart du cycle, repos sur les trois autres :
+   quatre lignes décalées de 2s se relaient sans jamais se chevaucher. */
+@keyframes letterPulse {
+  0%        { opacity: 0; }
+  12.5%     { opacity: 1; }
+  25%, 100% { opacity: 0; }
+}
+
+@keyframes flicker {
+  0% {
+    -webkit-text-stroke-width: 0;
+    opacity: 0;
+  }
+  12.5% {
+    -webkit-text-stroke-width: 0.25em;
+    opacity: 1;
+  }
+  25%, 100% {
+    -webkit-text-stroke-width: 0;
+    opacity: 0;
+  }
+}
+
+body {
+  cursor: none;
+  -webkit-text-stroke: 0.23vh black;
+}
