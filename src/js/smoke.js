@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import smokeUrl from '../texture/smoke_08.png';
+import smokeUrl from 'url:../texture/smoke_08.png';
 const tex = new THREE.TextureLoader().load(smokeUrl);
 
 const canvas = document.getElementById('popup-smoke');
@@ -49,7 +49,7 @@ const animateSmoke = (now) => {
   smokeParticles.forEach(p => p.rotation.z += delta * 0.12);
   smokeRenderer.render(smokeScene, smokeCamera);
 };
-const startSmoke = () => !rafId && (lastTime = performance.now(), requestAnimationFrame(animateSmoke));
+const startSmoke = () => !rafId && (lastTime = performance.now(), rafId = requestAnimationFrame(animateSmoke));
 const stopSmoke = () => rafId && (cancelAnimationFrame(rafId), rafId = null);
 
 const observer = new MutationObserver(() => {

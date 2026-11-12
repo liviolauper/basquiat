@@ -144,6 +144,8 @@ const FloatingPopup = (() => {
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay || e.target === canvas) close();
   });
+  // Module ES : FloatingPopup n'est pas global, un onclick inline échouerait.
+  document.getElementById('floating-close').addEventListener('click', () => close());
 
   function open(src) {
     loadImage(src, () => {
@@ -253,7 +255,7 @@ import w23 from 'url:../../public/imgs/articles/andy warhol/basquiat_warhol_26.j
 import w24 from 'url:../../public/imgs/articles/andy warhol/basquiat_warhol_box_1.png';
 import w25 from 'url:../../public/imgs/articles/andy warhol/basquiat_warhol_box_2.png';
 import w26 from 'url:../../public/imgs/articles/andy warhol/basquiat_warhol_box_3.jpeg';
-import w27 from 'url:../../public/imgs/articles/andy warhol/basquiat_warhol_box_4.jpeg';
+import w27 from 'url:../../public/imgs/articles/andy warhol/basquiat_warhol_box_4.webp';
 import sa1 from 'url:../../public/imgs/articles/samo/samo_1.png';
 import sa2 from 'url:../../public/imgs/articles/samo/samo_2.png';
 import sa3 from 'url:../../public/imgs/articles/samo/samo_3.png';
@@ -301,7 +303,6 @@ const closeBtn = document.getElementById('popup-close');
 let current = 0;
 let total = 0;
 let slideWidth = 0;
-const SLIDE_GAP = 100;
 
 function calcSlideWidth() {
   const viewport = popup.querySelector('.slider-viewport');
@@ -312,7 +313,9 @@ function calcSlideWidth() {
 }
 
 function updateSlider() {
-  track.style.transform = `translateX(-${current * (slideWidth)}px)`;
+  // Le pas d'une slide inclut l'espace CSS entre slides (gap du .slider-track)
+  const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+  track.style.transform = `translateX(-${current * (slideWidth + gap)}px)`;
 
   progressEl.querySelectorAll('.progress-bar').forEach((bar, i) => {
     bar.classList.toggle('active', i === current);
@@ -397,7 +400,7 @@ window.addEventListener('resize', () => {
   });
 });
 
-/*window.addEventListener('word-click', (e) => {
+window.addEventListener('word-click', (e) => {
   if (popup.classList.contains('active')) return;
   openPopup(e.detail.word);
-});*/
+});

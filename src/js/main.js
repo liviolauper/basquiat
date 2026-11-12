@@ -1,6 +1,5 @@
 import './articles.js';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import busteUrl    from 'url:../../public/models/model.glb';
 import cursorUrl   from 'url:../img/cursor.png';
@@ -40,7 +39,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 // 1.0 est tronqué net et le dégradé sous le néon s'aplatit en blanc pur.
 // toneMappingExposure devient le réglage global de luminosité.
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.7    ;
+renderer.toneMappingExposure = 0.7;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -517,7 +516,7 @@ const cameraControl = {
   orbitSmoothing: 0.08,
 
   // Zoom/mouvement avant-arrière
-  zoomVelocity: 1,
+  zoomVelocity: 0,
   targetZoomVelocity: 0,
   zoomDamping: 0.85,
   zoomAcceleration: 0.8,
